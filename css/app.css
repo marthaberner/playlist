@@ -42,7 +42,7 @@ section.right {
   width: 49%;
   height: 100%;
   background-image: url('../resources/track.jpg');
-  background-size: 565px 800px;;
+  background-size: 565px 800px;
   background-repeat: no-repeat;
   opacity: .19;
   float: right;
@@ -70,8 +70,8 @@ button {
   color:#FFF;
   text-decoration:none;
 }
+
 .results {
   width: 50%;
   margin: 0 auto;
-  opacity: 1;
 }

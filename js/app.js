@@ -1,55 +1,44 @@
 $(function () {
-  $('#my-tracks').hide();
-  var getTracks = $("button");
-  getTracks.click(function () {
-    window.location.assign("tracks.html")
+  $( "button[name='choose-tracks']" ).click(function () {
+    window.location.href = "tracks.html";
   })
 
-  $(document).on('click', '.single-track', function () {
-    $('#my-tracks').show();
+  $(document).on("click", '.single-track', function () {
     $('#my-tracks').append(this);
-
   })
-
-  $('.submit').click(function (event) {
-    $.ajax({
-      method: "POST",
-      url: "https://lit-fortress-6467.herokuapp.com/post",
-      data: {}
-    }).done(function( msg ) {
-        alert(msg);
-        window.location.assign('index.html');
-      });
-  })
-
-  var someTracks = $('.results');
-  var allTracks = $('.tracks');
-  var submit = $('.submit');
 
   $.ajax({
-    url: "https://lit-fortress-6467.herokuapp.com/object",
+    url: "https://lit-fortress-6467.herokuapp.com/object ",
     context: document.body
-  }).done(function(tracks) {
-    var randomTracks = shuffle(tracks.results);
-    showTracks(randomTracks, someTracks);
-    showTracks(tracks.results, allTracks);
+  }).done(function(results) {
+    var shuffledTracks = shuffleTracks(results.results);
+    console.log(shuffledTracks);
+    showTracks(shuffledTracks, ".results" );
+    showTracks(results.results, ".tracks");
+    // append album images to our container
+  });
+
+  $.ajax({
+  method: "POST",
+  url: " https://lit-fortress-6467.herokuapp.com/post",
+  }).done(function( msg ) {
+    console.log( "Data Saved: " + msg );
   });
 
 
-
-  function shuffle(array){
+  function shuffleTracks(array) {
     var results = [];
-    for(var i=0; i<3; i++){
-      var j = Math.floor(Math.random()*(5 - 0));
+    for (var i = 0; i < 3; i++) {
+    var j = Math.floor(Math.random() * array.length);
       results.push(array[j]);
     }
     return results;
   }
 
-  function showTracks(tracks, element){
-    tracks.forEach(function (track, i) {
-      var id = i;
-      element.append('<img class="single-track" id=' + id + ' src=images/'+ track.cover_art + '></img>');
+  function showTracks(array, element) {
+    var gallery = $(element);
+    array.forEach(function (track) {
+      gallery.append('<img class="single-track" src=images/' + track.cover_art + ' id=track-'+ track.id + '></img>');
     })
   }
 })
